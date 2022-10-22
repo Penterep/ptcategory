@@ -1,5 +1,4 @@
 import csv
-from msilib.schema import Error
 from UnknownCsvHeadersError import UnknownCsvHeadersError
 
 from formextraction.FormExtractor import FormExtractor
@@ -10,7 +9,7 @@ class CsvProvider:
     
     def __init__(self, csv_file_path: str) -> None:
         self.csv_file_path = csv_file_path
-        with open(csv_file_path, encoding=self.ENCODING) as csv_file:#TODO: test opening headers-only csv
+        with open(csv_file_path, encoding=self.ENCODING) as csv_file:
             self.rows_dict = list(csv.DictReader(csv_file, delimiter=self.DELIMITER))
             
     def save_file(self) -> None:
