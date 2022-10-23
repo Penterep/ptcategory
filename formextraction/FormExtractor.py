@@ -2,6 +2,8 @@ from formextraction.FormsMetadata import FormsMetadata
 import requests
 from bs4 import BeautifulSoup,ResultSet
 
+from formextraction.HrefAttribute import HrefAttribute
+
 class FormExtractor:
     METHOD = "GET"
     PARSER = "html.parser"
@@ -37,5 +39,14 @@ class FormExtractor:
     def get_upload_input(self) -> int:
         return len(self.soup.select("input[type=upload]"))
     
-    def get_download_button(self) -> int:#TODO: implement
-        return 0
+    def get_download_button(self) -> int:
+        download_buttons = 0
+        anchor_tags = self.soup.select("a[href],a[download]")
+        for anchor_tag in anchor_tags:
+            if anchor_tag.has_attr("download"):
+                download_buttons += 1
+            elif anchor_tag.has_attr("href"):
+                if HrefAttribute(anchor_tag.attrs["href"]).is_file_href():
+                    download_buttons += 1
+        return download_buttons
+    
