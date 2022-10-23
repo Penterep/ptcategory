@@ -1,3 +1,4 @@
+from RequestCache import RequestCache
 from formextraction.FormsMetadata import FormsMetadata
 import requests
 from bs4 import BeautifulSoup,ResultSet
@@ -10,7 +11,7 @@ class FormExtractor:
     
     def __init__(self, url: str) -> None:
         self.url = url
-        self.response: requests.Response = requests.request(self.METHOD, url) #TODO: test if fails
+        self.response: requests.Response = RequestCache.request(self.METHOD, url) #TODO: test if fails
         self.soup = BeautifulSoup(self.response.text, self.PARSER)
         
     def get_metadata(self) -> FormsMetadata:
