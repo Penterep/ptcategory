@@ -7,6 +7,7 @@ import argparse
 import sys
 import json
 
+from CsvProvider import CsvProvider
 
 class ptwebcategory:
     def __init__(self, args):
@@ -18,6 +19,12 @@ class ptwebcategory:
     def run(self):
         if self.args.file:
             print(self.args.file)
+            csv_provider = CsvProvider(self.args.file)
+            #...
+            csv_provider.extract_forms()
+            #csv_provider.extract_javascript()
+            #...
+            csv_provider.save_file()
         sys.exit(0)
 
 
