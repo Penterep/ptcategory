@@ -4,8 +4,8 @@ from UnknownCsvHeadersError import UnknownCsvHeadersError
 from formextraction.FormExtractor import FormExtractor
 
 class CsvProvider:
-    DELIMITER = ";"
-    ENCODING = "utf-8-sig"
+    DELIMITER = ","
+    ENCODING = "utf-8"
     
     def __init__(self, csv_file_path: str) -> None:
         self.csv_file_path = csv_file_path
