@@ -128,5 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-#VS Code stuff
+# VS Code stuff
 .vscode/launch.json
+
+# Datasets
+dataset-*
