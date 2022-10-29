@@ -22,8 +22,7 @@ class ptwebcategory:
             csv_provider = CsvProvider(self.args.file)
             #...
             csv_provider.extract_forms()
-            csv_provider.extract_javascript()
-            #csv_provider.extract_css()
+            #csv_provider.extract_javascript()
             #...
             csv_provider.save_file()
         sys.exit(0)
