@@ -2,6 +2,7 @@ import csv
 from UnknownCsvHeadersError import UnknownCsvHeadersError
 
 from formextraction.FormExtractor import FormExtractor
+from jsextraction.JSExtractor import JSExtractor
 
 class CsvProvider:
     DELIMITER = ","
@@ -29,3 +30,11 @@ class CsvProvider:
             row["Login form"] = metadata.login_form
             row["Upload input"] = metadata.upload_input
             row["Download button"] = metadata.download_button
+            
+    def extract_javascript(self) -> None:
+        for row in self.rows_dict:
+            js_extractor = JSExtractor(url=row["URL"])
+            metadata = js_extractor.get_metadata()
+            row["Local JavaScript"] = metadata.local_js
+            row["External JavaScript"] = metadata.external_js
+            row["Inline JavaScript"] = metadata.inline_js
