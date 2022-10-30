@@ -23,7 +23,7 @@ class ptwebcategory:
             #...
             csv_provider.extract_forms()
             csv_provider.extract_javascript()
-            #csv_provider.extract_css()
+            csv_provider.extract_query()
             #...
             csv_provider.save_file()
         sys.exit(0)
