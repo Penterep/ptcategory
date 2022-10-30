@@ -19,9 +19,9 @@ class FormExtractor:
         login_form = self.get_login_form()
         upload_input = self.get_upload_input()
         download_button = self.get_download_button()
-        input = self.get_input()
+        user_input = self.get_user_input()
         registration_form = self.get_registration_forms()
-        return FormsMetadata(html_form, login_form, upload_input, download_button, input, registration_form)
+        return FormsMetadata(html_form, login_form, upload_input, download_button, user_input, registration_form)
     
     def get_html_form(self) -> int:
         forms = self.get_forms()
@@ -56,7 +56,7 @@ class FormExtractor:
                     download_buttons += 1
         return download_buttons
     
-    def get_input(self) -> int:
+    def get_user_input(self) -> int:
         return len(self.soup.select("input"))
     
     def get_registration_forms(self) -> int:
