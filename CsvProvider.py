@@ -30,6 +30,8 @@ class CsvProvider:
             row["Login form"] = metadata.login_form
             row["Upload input"] = metadata.upload_input
             row["Download button"] = metadata.download_button
+            row["User inputs"] = metadata.input
+            row["Registration form"] = metadata.registration_form
 
     def extract_javascript(self) -> None:
         for row in self.rows_dict:
