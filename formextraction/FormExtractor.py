@@ -19,20 +19,25 @@ class FormExtractor:
         login_form = self.get_login_form()
         upload_input = self.get_upload_input()
         download_button = self.get_download_button()
-        return FormsMetadata(html_form, login_form, upload_input, download_button)
+        user_input = self.get_user_input()
+        registration_form = self.get_registration_forms()
+        return FormsMetadata(html_form, login_form, upload_input, download_button, user_input, registration_form)
     
     def get_html_form(self) -> int:
         forms = self.get_forms()
         return len(forms)
     
     def get_login_form(self) -> int:
+        input_count_in_forms = self.get_input_count_in_forms()
+        return len(list(filter(lambda x: x == 1, input_count_in_forms)))
+    
+    def get_input_count_in_forms(self) -> list[int]:
         forms = self.get_forms()
-        login_forms = 0
+        inputs_in_forms: list[int] = []
         for form in forms:
             password_inputs = form.select("input[type=password]")
-            if len(password_inputs) > 0:
-                login_forms += 1
-        return login_forms
+            inputs_in_forms.append(len(password_inputs))
+        return inputs_in_forms
         
     def get_forms(self) -> ResultSet:
         return self.soup.find_all("form")
@@ -51,3 +56,9 @@ class FormExtractor:
                     download_buttons += 1
         return download_buttons
     
+    def get_user_input(self) -> int:
+        return len(self.soup.select("input"))
+    
+    def get_registration_forms(self) -> int:
+        input_count_in_forms = self.get_input_count_in_forms()
+        return len(list(filter(lambda x: x == 2, input_count_in_forms)))
