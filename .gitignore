@@ -130,6 +130,7 @@ dmypy.json
 
 # VS Code stuff
 .vscode/launch.json
+*.code-workspace
 
 # Datasets
 dataset-*
