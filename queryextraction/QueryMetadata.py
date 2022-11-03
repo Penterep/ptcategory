@@ -6,4 +6,3 @@ class QueryMetadata:
         self.query_3 = query_3
         self.query_4 = query_4
         self.query_5 = query_5
-       

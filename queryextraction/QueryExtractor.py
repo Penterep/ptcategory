@@ -1,7 +1,7 @@
-from email.mime import base
+from ast import parse
 from urllib.parse import urlparse
 
-from QueryMetadata import QueryMetadata
+from queryextraction.QueryMetadata import QueryMetadata
 
 class QueryExtractor:
     
@@ -10,27 +10,25 @@ class QueryExtractor:
       
     def get_metadata(self) -> QueryMetadata:
         query_full = self.get_query()
-        #print(query_full)
         query_1, query_2, query_3, query_4, query_5 = self.get_q_parameters()
         return QueryMetadata(query_full, query_1, query_2, query_3, query_4, query_5)
     
     def get_query(self) -> str:
-        return urlparse(self.url).query
+        parsed_query = urlparse(self.url).query
+        return parsed_query if parsed_query != "" else "0"
     
     def get_q_parameters(self) -> int:
+        max_params = 5
+        i = 0
         query = self.get_query()
         query_parameters = []
-        
         split_query = query.split("&")
-        
-        for i in split_query:
-            for j in range(1, len(split_query)):
-                query_parameters[j] = int(str(hash(i)), 16)
-    
-        return query_parameters[0:4]
+        while i < max_params:
+            if len(query_parameters) < len(split_query) and split_query[i] != "0":
+                query_parameters.append(hash(split_query[i]))
+            else: 
+                query_parameters.append(0)  
+            i += 1
+        return query_parameters[0:5]
 
-""""
-query = QueryExtractor("https://www.midgard.cz/?lang=en&page=shop")
-x = query.get_metadata()
-print(x.query_1)
-"""    
+    
