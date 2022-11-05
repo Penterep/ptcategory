@@ -3,7 +3,8 @@ from tldextract import tldextract
 import os
 import requests
 
-from CssMetadata import CssMetadata
+from RequestCache import RequestCache
+from cssextraction.CssMetadata import CssMetadata
 
 
 class CssExtractor:
@@ -12,7 +13,7 @@ class CssExtractor:
     
     def __init__(self, url: str) -> None:
         self.domain_name = self._extract_domain(url)
-        self.response: requests.Request = requests.request(self.METHOD, url)
+        self.response: requests.Request = RequestCache.request(self.METHOD, url)
         self.soup = BeautifulSoup(self.response.text, self.PARSER)
     
     def get_metadata(self) -> CssMetadata:
@@ -25,7 +26,6 @@ class CssExtractor:
         external_css = 0
         local_css = 0
         for link in links:
-            
             if link.has_attr("href") or link.has_attr("data-href"):
                 src = link["href"] if link.has_attr("href") else link["data-href"]
                 if self._is_external_css(src):

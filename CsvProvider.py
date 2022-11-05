@@ -3,6 +3,8 @@ from UnknownCsvHeadersError import UnknownCsvHeadersError
 
 from formextraction.FormExtractor import FormExtractor
 from jsextraction.JSExtractor import JSExtractor
+from cssextraction.CssExtractor import CssExtractor
+
 
 class CsvProvider:
     DELIMITER = ","
@@ -40,3 +42,11 @@ class CsvProvider:
             row["Local JavaScript"] = metadata.local_js
             row["External JavaScript"] = metadata.external_js
             row["Inline JavaScript"] = metadata.inline_js
+            
+    def extract_css(self) -> None:
+        for row in self.rows_dict:
+            css_extractor = CssExtractor(url=row["URL"])
+            metadata = css_extractor.get_metadata()
+            row["Local CSS"] = metadata.local_css
+            row["External CSS"] = metadata.external_css
+            row["Block CSS"] = metadata.block_css
