@@ -43,10 +43,10 @@ class CssExtractor:
         return False
     
     def _get_block_css(self) -> int:
-        return len(self.soup.head.find_all("style"))
+        return len(self.soup.find_all("style"))
     
     def _get_link(self) -> ResultSet:
-        return self.soup.head.find_all("link")
+        return self.soup.find_all("link")
     
     def _extract_domain(self, url: str) -> str:
         ext = tldextract.extract(url)
