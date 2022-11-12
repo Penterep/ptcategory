@@ -4,7 +4,7 @@ from UnknownCsvHeadersError import UnknownCsvHeadersError
 from formextraction.FormExtractor import FormExtractor
 from jsextraction.JSExtractor import JSExtractor
 from cssextraction.CssExtractor import CssExtractor
-
+from queryextraction.QueryExtractor import QueryExtractor
 
 class CsvProvider:
     DELIMITER = ","
@@ -50,3 +50,14 @@ class CsvProvider:
             row["Local CSS"] = metadata.local_css
             row["External CSS"] = metadata.external_css
             row["Block CSS"] = metadata.block_css
+
+    def extract_query(self) -> None:
+        for row in self.rows_dict:
+            query_extractor = QueryExtractor(url=row["URL"])
+            metadata = query_extractor.get_metadata()
+            row["Query params"] = metadata.query_full
+            row["Query param 1"] = metadata.query_1
+            row["Query param 2"] = metadata.query_2
+            row["Query param 3"] = metadata.query_3
+            row["Query param 4"] = metadata.query_4
+            row["Query param 5"] = metadata.query_5
