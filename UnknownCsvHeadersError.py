@@ -1,4 +1,4 @@
-from msilib.schema import Error
+# from msilib.schema import Error
 
 
 class UnknownCsvHeadersError(Exception):
