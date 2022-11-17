@@ -11,6 +11,7 @@ from CsvProvider import CsvProvider
 from classification.Classifier import Classifier
 from classification.Dataset import Dataset
 
+
 class ptwebcategory:
     def __init__(self, args):
         self.ptjsonlib = ptjsonlib.ptjsonlib(args.json)
@@ -32,6 +33,8 @@ class ptwebcategory:
             classifier = Classifier(dataset)
             classifier.mean_shift()
             classifier.optics()
+            classifier.spectral_clustering()
+            classifier.gaussian_mixture()
         sys.exit(0)
 
 
@@ -45,10 +48,10 @@ def get_help():
         ]},
         {"options": [
             ["-f", "--file", "<file path>", "Load urls from file"],
-            ["-j",  "--json", "",  "Output in JSON format"],
-            ["-v",  "--version", "", "Show script version and exit"],
+            ["-j", "--json", "", "Output in JSON format"],
+            ["-v", "--version", "", "Show script version and exit"],
             ["-h", "--help", "", "Show this help message and exit"],
-            ["-e" "--evaluation-only", "", "Run only evaluation on already created dataset"] #TODO: delete after clustering tests
+            ["-e", "--evaluation-only", "", "Run only evaluation on already created dataset"]  # TODO: delete after clustering tests
         ]
         }]
 
@@ -60,7 +63,7 @@ def parse_args():
     parser.add_argument("-j", "--json", action="store_true")
     parser.add_argument("-v", "--version", action="version",
                         version=f"%(prog)s {__version__}")
-    parser.add_argument("-e" , "--evaluation-only", action="store_true") #TODO: delete after clustering tests
+    parser.add_argument("-e", "--evaluation-only", action="store_true")  # TODO: delete after clustering tests
 
     if len(sys.argv) == 1 or "-h" in sys.argv or "--help" in sys.argv:
         ptmisclib.help_print(get_help(), SCRIPTNAME, __version__)
@@ -68,6 +71,7 @@ def parse_args():
 
     args = parser.parse_args()
     ptmisclib.print_banner(SCRIPTNAME, __version__, args.json)
+
     return args
 
 
