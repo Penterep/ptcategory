@@ -3,7 +3,7 @@ from copy import deepcopy
 import pandas as pd
 from matplotlib import pyplot
 from numpy import unique, where
-from sklearn.cluster import OPTICS, MeanShift, SpectralClustering
+from sklearn.cluster import OPTICS, MeanShift, SpectralClustering, KMeans
 from sklearn.mixture import GaussianMixture
 
 from classification.Dataset import Dataset
@@ -36,10 +36,16 @@ class Classifier:
         df = self._get_clustered_dataframe(model)
         self._display_parallel_coordinates(df, "Gaussian mixture")
 
+    def kmeans(self, init: str, max_iter:int, init_clusters:int) -> None:
+        model = KMeans(init=init, max_iter=max_iter, n_init=init_clusters)
+        df = self._get_clustered_dataframe(model)
+        self._display_parallel_coordinates(df, "K-means")
+
     def _get_clustered_dataframe(self, model) -> pd.DataFrame:
         dataset_copy = self.dataset.get_copy()
         yhat = model.fit_predict(dataset_copy)
         clusters = unique(yhat)
+        
 
         i = 1
         for cluster in clusters:
