@@ -3,7 +3,7 @@ from copy import deepcopy
 import pandas as pd
 from matplotlib import pyplot
 from numpy import unique, where
-from sklearn.cluster import OPTICS, MeanShift, SpectralClustering, KMeans
+from sklearn.cluster import OPTICS, MeanShift, SpectralClustering, KMeans, MiniBatchKMeans
 from sklearn.mixture import GaussianMixture
 
 from classification.Dataset import Dataset
@@ -36,8 +36,13 @@ class Classifier:
         df = self._get_clustered_dataframe(model)
         self._display_parallel_coordinates(df, "Gaussian mixture")
 
-    def kmeans(self, init: str, max_iter:int, init_clusters:int) -> None:
+    def kmeans(self, init: str, max_iter: int, init_clusters: int) -> None:
         model = KMeans(init=init, max_iter=max_iter, n_init=init_clusters)
+        df = self._get_clustered_dataframe(model)
+        self._display_parallel_coordinates(df, "K-means")
+    
+    def kmeans_mini_batch(self, init: str, max_iter: int, init_clusters: int, batch_size: int) -> None:
+        model = MiniBatchKMeans(init=init, max_iter=max_iter, n_init=init_clusters, batch_size=batch_size)
         df = self._get_clustered_dataframe(model)
         self._display_parallel_coordinates(df, "K-means")
 
