@@ -78,6 +78,6 @@ class Classifier:
         return pd.DataFrame(dataset_copy, columns=categories)
 
     def _display_parallel_coordinates(self, data_frame: pd.DataFrame, figure_name: str) -> None:
-        f = pyplot.figure(figure_name)
         pd.plotting.parallel_coordinates(data_frame, self.CLUSTER_COLUMN_NAME, color=self.COLORS)
-        f.show()
+        pyplot.title(figure_name)
+        pyplot.show()
