@@ -35,6 +35,9 @@ class ptwebcategory:
             classifier.optics()
             classifier.spectral_clustering()
             classifier.gaussian_mixture()
+            classifier.dbscan()
+            classifier.birch()
+            input("Press enter to exit...")
         sys.exit(0)
 
 
