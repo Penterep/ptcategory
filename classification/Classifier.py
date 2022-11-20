@@ -37,7 +37,17 @@ class Classifier:
         self._display_parallel_coordinates(df, "Gaussian mixture")
 
     def dbscan(self) -> None:
-        eps, min_pts = self._dbscan_params()
+        dataset_copy = self.dataset.get_copy()
+        min_pts = self.dataset.get_colums_len()
+        
+        neighbors = NearestNeighbors(n_neighbors=min_pts).fit(dataset_copy)
+        distances, _ = neighbors.kneighbors(dataset_copy)
+        distances = sort(distances, axis=0)[:,min_pts-1]
+        i = arange(len(distances))
+        
+        knee = KneeLocator(i, distances, curve="convex")
+        eps = float(f"{distances[knee.knee]:.1f}")
+
         model = DBSCAN(eps=eps, min_samples=min_pts)
         df = self._get_clustered_dataframe(model)
         self._display_parallel_coordinates(df, "DBSCAN")
@@ -46,19 +56,6 @@ class Classifier:
         model = Birch(branching_factor=branching_factor, n_clusters=n_clusters, threshold=threshold)
         df = self._get_clustered_dataframe(model)
         self._display_parallel_coordinates(df, "Birch")
-    
-    def _dbscan_params(self) -> float|int:
-        dataset_copy = self.dataset.get_copy()
-        min_pts = self.dataset.get_colums_len()
-
-        neighbors = NearestNeighbors(n_neighbors=min_pts).fit(dataset_copy)
-        distances, _ = neighbors.kneighbors(dataset_copy)
-        distances = sort(distances, axis=0)[:,min_pts-1]
-        i = arange(len(distances))
-
-        knee = KneeLocator(i, distances, curve="convex")
-        eps = float(f"{distances[knee.knee]:.1f}")
-        return eps, min_pts
 
     def _get_clustered_dataframe(self, model) -> pd.DataFrame:
         dataset_copy = self.dataset.get_copy()
