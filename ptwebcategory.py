@@ -27,7 +27,7 @@ class ptwebcategory:
                 csv_provider.extract_forms()
                 csv_provider.extract_javascript()
                 csv_provider.extract_css()
-                csv_provider.extract_javascript()
+                csv_provider.extract_query()
                 csv_provider.save_file()
             dataset = Dataset(csv_provider.rows_dict, start_from_col=1)
             classifier = Classifier(dataset)
@@ -35,6 +35,11 @@ class ptwebcategory:
             classifier.optics()
             classifier.spectral_clustering()
             classifier.gaussian_mixture()
+            classifier.dbscan()
+            classifier.birch()
+            classifier.affinity_propagation()
+            classifier.agglomerative_clustering()
+            input("Press enter to exit...")
         sys.exit(0)
 
 

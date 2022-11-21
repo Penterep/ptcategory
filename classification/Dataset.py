@@ -17,3 +17,6 @@ class Dataset:
         if not self._categories:
             self._categories = list(list(self._data[0].keys())[self._start_from_col:])
         return self._categories.copy()
+
+    def get_colums_len(self) -> int:
+        return (len(self._data[0]) - self._start_from_col) + 1
