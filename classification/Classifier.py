@@ -47,8 +47,7 @@ class Classifier:
         model = MiniBatchKMeans(init=init, max_iter=max_iter, n_init=init_clusters, batch_size=batch_size)
         df = self._get_clustered_dataframe(model)
         self._display_parallel_coordinates(df, "K-means mini batch")
-
-
+        
     def dbscan(self) -> None:
         dataset_copy = self.dataset.get_copy()
         min_pts = self.dataset.get_colums_len()
