@@ -43,7 +43,7 @@ class Classifier:
         df = self._get_clustered_dataframe(model)
         self._display_parallel_coordinates(df, "K-means")
     
-    def kmeans_mini_batch(self, init: str = "k-means++", max_iter: int = 300, init_clusters: int = 10, batch_size: int = 10) -> None:
+    def kmeans_mini_batch(self, init: str = "k-means++", max_iter: int = 300, init_clusters: int = 10, batch_size: int = 2048) -> None:
         model = MiniBatchKMeans(init=init, max_iter=max_iter, n_init=init_clusters, batch_size=batch_size)
         df = self._get_clustered_dataframe(model)
         self._display_parallel_coordinates(df, "K-means mini batch")
