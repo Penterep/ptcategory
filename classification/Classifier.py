@@ -1,6 +1,5 @@
 import pandas as pd
 from matplotlib import pyplot
-from numpy import unique, where
 from sklearn.cluster import OPTICS, MeanShift, SpectralClustering, KMeans, MiniBatchKMeans
 from numpy import unique, where, sort, arange
 from sklearn.cluster import OPTICS, MeanShift, SpectralClustering, DBSCAN, Birch
