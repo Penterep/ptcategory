@@ -37,6 +37,8 @@ class ptwebcategory:
             classifier.gaussian_mixture()
             classifier.dbscan()
             classifier.birch()
+            classifier.kmeans()
+            classifier.kmeans_mini_batch()
             input("Press enter to exit...")
         sys.exit(0)
 

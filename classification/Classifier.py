@@ -1,5 +1,7 @@
 import pandas as pd
 from matplotlib import pyplot
+from numpy import unique, where
+from sklearn.cluster import OPTICS, MeanShift, SpectralClustering, KMeans, MiniBatchKMeans
 from numpy import unique, where, sort, arange
 from sklearn.cluster import OPTICS, MeanShift, SpectralClustering, DBSCAN, Birch
 from sklearn.mixture import GaussianMixture
@@ -36,6 +38,16 @@ class Classifier:
         df = self._get_clustered_dataframe(model)
         self._display_parallel_coordinates(df, "Gaussian mixture")
 
+    def kmeans(self, init: str  = "k-means++", max_iter: int = 300, init_clusters: int = 10) -> None:
+        model = KMeans(init=init, max_iter=max_iter, n_init=init_clusters)
+        df = self._get_clustered_dataframe(model)
+        self._display_parallel_coordinates(df, "K-means")
+    
+    def kmeans_mini_batch(self, init: str = "k-means++", max_iter: int = 300, init_clusters: int = 10, batch_size: int = 2048) -> None:
+        model = MiniBatchKMeans(init=init, max_iter=max_iter, n_init=init_clusters, batch_size=batch_size)
+        df = self._get_clustered_dataframe(model)
+        self._display_parallel_coordinates(df, "K-means mini batch")
+        
     def dbscan(self) -> None:
         dataset_copy = self.dataset.get_copy()
         min_pts = self.dataset.get_colums_len()
@@ -61,6 +73,7 @@ class Classifier:
         dataset_copy = self.dataset.get_copy()
         yhat = model.fit_predict(dataset_copy)
         clusters = unique(yhat)
+        
 
         i = 1
         for cluster in clusters:
