@@ -5,9 +5,9 @@ __version__ = "0.0.1"
 from ptlibs import ptjsonlib, ptmisclib
 import argparse
 import sys
-import json
 
 from CsvProvider import CsvProvider
+from RequestCache import RequestCache
 from classification.Classifier import Classifier
 from classification.Dataset import Dataset
 
@@ -24,6 +24,7 @@ class ptwebcategory:
             print(self.args.file)
             csv_provider = CsvProvider(self.args.file)
             if not self.args.evaluation_only:
+                RequestCache.request_parallel("GET", list(row["URL"] for row in csv_provider.rows_dict))
                 csv_provider.extract_forms()
                 csv_provider.extract_javascript()
                 csv_provider.extract_css()

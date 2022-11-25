@@ -1,4 +1,5 @@
 import requests
+from ptthreads import ptthreads
 
 class RequestIdentifier:
     def __init__(self, method: str, url: str) -> None:
@@ -33,3 +34,8 @@ class RequestCache:
             cls.cache[identifier] = response
             return response
         
+
+    @classmethod
+    def request_parallel(cls, method: str, urls: list[str]) -> None:
+        threads = ptthreads.ptthreads()
+        threads.threads(urls, lambda x: cls.request(method, x), 20)

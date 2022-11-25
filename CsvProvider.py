@@ -14,6 +14,7 @@ class CsvProvider:
         self.csv_file_path = csv_file_path
         with open(csv_file_path, encoding=self.ENCODING) as csv_file:
             self.rows_dict = list(csv.DictReader(csv_file, delimiter=self.DELIMITER))
+        
             
     def save_file(self) -> None:
         with open(self.csv_file_path, "w", encoding=self.ENCODING, newline="") as csv_file:
