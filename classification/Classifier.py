@@ -1,7 +1,7 @@
 import pandas as pd
 from matplotlib import pyplot
 from numpy import unique, where, sort, arange
-from sklearn.cluster import OPTICS, MeanShift, SpectralClustering, KMeans, MiniBatchKMeans
+from sklearn.cluster import OPTICS, MeanShift, SpectralClustering, KMeans, MiniBatchKMeans, DBSCAN, Birch
 from sklearn.mixture import GaussianMixture
 from sklearn.neighbors import NearestNeighbors
 from kneed import KneeLocator
@@ -32,6 +32,7 @@ class Classifier:
         self._display_parallel_coordinates(df, "Spectral clustering")
 
     def gaussian_mixture(self) -> None:
+        print('test')
         model = GaussianMixture(n_components=3)
         df = self._get_clustered_dataframe(model)
         self._display_parallel_coordinates(df, "Gaussian mixture")
