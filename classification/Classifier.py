@@ -1,8 +1,7 @@
 import pandas as pd
 from matplotlib import pyplot
-from sklearn.cluster import OPTICS, MeanShift, SpectralClustering, KMeans, MiniBatchKMeans
 from numpy import unique, where, sort, arange
-from sklearn.cluster import OPTICS, MeanShift, SpectralClustering, DBSCAN, Birch
+from sklearn.cluster import OPTICS, MeanShift, SpectralClustering, KMeans, MiniBatchKMeans
 from sklearn.mixture import GaussianMixture
 from sklearn.neighbors import NearestNeighbors
 from kneed import KneeLocator
