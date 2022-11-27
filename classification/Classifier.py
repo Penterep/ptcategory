@@ -101,3 +101,4 @@ class Classifier:
         f = pyplot.figure(figure_name)
         pd.plotting.parallel_coordinates(data_frame, self.CLUSTER_COLUMN_NAME, color=self.COLORS)
         f.show()
+        
