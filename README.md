@@ -20,12 +20,14 @@ source ~/.bashrc
 ## Usage examples
 
 ```
-ptwebcategory -f ./urls.txt                   # Load urls from file
+ptwebcategory -f ./dataset-test.csv                   # Load dataset (CSV)
+ptwebcategory -f ./dataset-test.csv -e                # Load dataset only for clustering
 ```
 
 ## Options
 ```
-   -f   --file                <file>          Load urls from file
+   -f   --file                <file>          Load dataset (CSV)
+   -e   --evaluation-only                     Run only evaluation on already created dataset
    -j   --json                                Output in JSON format
    -v   --version                             Show script version and exit
    -h   --help                                Show this help message and exit
