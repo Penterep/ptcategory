@@ -1,7 +1,7 @@
 import pandas as pd
 from matplotlib import pyplot
-from numpy import unique, where, sort, arange
-from sklearn.cluster import OPTICS, MeanShift, SpectralClustering, KMeans, MiniBatchKMeans, DBSCAN, Birch
+from numpy import unique, where
+from sklearn.cluster import OPTICS, MeanShift, SpectralClustering, KMeans, MiniBatchKMeans, DBSCAN, Birch, AffinityPropagation, AgglomerativeClustering
 from sklearn.mixture import GaussianMixture
 from sklearn.neighbors import NearestNeighbors
 from kneed import KneeLocator
@@ -62,11 +62,21 @@ class Classifier:
         model = DBSCAN(eps=eps, min_samples=min_pts)
         df = self._get_clustered_dataframe(model)
         self._display_parallel_coordinates(df, "DBSCAN")
-
+    
     def birch(self, branching_factor: int=50, n_clusters: int=None, threshold: float=0.1) -> None:
         model = Birch(branching_factor=branching_factor, n_clusters=n_clusters, threshold=threshold)
         df = self._get_clustered_dataframe(model)
         self._display_parallel_coordinates(df, "Birch")
+
+    def affinity_propagation(self) -> None:
+        model = AffinityPropagation(max_iter=1, damping=0.9)
+        df = self._get_clustered_dataframe(model)
+        self._display_parallel_coordinates(df, "Affinity propagation")
+            
+    def agglomerative_clustering(self) -> None:
+        model = AgglomerativeClustering(n_clusters=None, distance_threshold=0.1, compute_distances=True)
+        df = self._get_clustered_dataframe(model)
+        self._display_parallel_coordinates(df, "Agglomerative Clustering")
 
     def _get_clustered_dataframe(self, model) -> pd.DataFrame:
         dataset_copy = self.dataset.get_copy()
@@ -90,3 +100,4 @@ class Classifier:
         f = pyplot.figure(figure_name)
         pd.plotting.parallel_coordinates(data_frame, self.CLUSTER_COLUMN_NAME, color=self.COLORS)
         f.show()
+        

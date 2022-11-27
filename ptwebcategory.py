@@ -38,6 +38,8 @@ class ptwebcategory:
             classifier.gaussian_mixture()
             classifier.dbscan()
             classifier.birch()
+            classifier.affinity_propagation()
+            classifier.agglomerative_clustering()
             classifier.kmeans()
             classifier.kmeans_mini_batch()
             input("Press enter to exit...")
