@@ -10,6 +10,7 @@ from CsvProvider import CsvProvider
 from RequestCache import RequestCache
 from classification.Classifier import Classifier
 from classification.Dataset import Dataset
+from halo import Halo
 
 
 class ptwebcategory:
@@ -22,9 +23,12 @@ class ptwebcategory:
     def run(self):
         if self.args.file:
             print(self.args.file)
+            spinner = Halo(text="Requesting URLs...", spinner="dots", color = "white")
             csv_provider = CsvProvider(self.args.file)
             if not self.args.evaluation_only:
+                spinner.start()
                 RequestCache.request_parallel("GET", list(row["URL"] for row in csv_provider.rows_dict))
+                spinner.stop()
                 csv_provider.extract_forms()
                 csv_provider.extract_javascript()
                 csv_provider.extract_css()
