@@ -9,6 +9,7 @@ from queryextraction.QueryExtractor import QueryExtractor
 class CsvProvider:
     DELIMITER = ","
     ENCODING = "utf-8"
+    URL_ROW = "URL"
     
     def __init__(self, csv_file_path: str) -> None:
         self.csv_file_path = csv_file_path
@@ -27,7 +28,7 @@ class CsvProvider:
     
     def extract_forms(self) -> None:
         for row in self.rows_dict:
-            form_extractor = FormExtractor(url=row["URL"])
+            form_extractor = FormExtractor(url=row[self.URL_ROW])
             metadata = form_extractor.get_metadata()
             row["HTML form"] = metadata.html_form
             row["Login form"] = metadata.login_form
@@ -38,7 +39,7 @@ class CsvProvider:
             
     def extract_javascript(self) -> None:
         for row in self.rows_dict:
-            js_extractor = JSExtractor(url=row["URL"])
+            js_extractor = JSExtractor(url=row[self.URL_ROW])
             metadata = js_extractor.get_metadata()
             row["Local JavaScript"] = metadata.local_js
             row["External JavaScript"] = metadata.external_js
@@ -46,7 +47,7 @@ class CsvProvider:
             
     def extract_css(self) -> None:
         for row in self.rows_dict:
-            css_extractor = CssExtractor(url=row["URL"])
+            css_extractor = CssExtractor(url=row[self.URL_ROW])
             metadata = css_extractor.get_metadata()
             row["Local CSS"] = metadata.local_css
             row["External CSS"] = metadata.external_css
@@ -54,7 +55,7 @@ class CsvProvider:
 
     def extract_query(self) -> None:
         for row in self.rows_dict:
-            query_extractor = QueryExtractor(url=row["URL"])
+            query_extractor = QueryExtractor(url=row[self.URL_ROW])
             metadata = query_extractor.get_metadata()
             row["Query params"] = metadata.query_full
             row["Query param 1"] = metadata.query_1
@@ -62,3 +63,7 @@ class CsvProvider:
             row["Query param 3"] = metadata.query_3
             row["Query param 4"] = metadata.query_4
             row["Query param 5"] = metadata.query_5
+            
+            
+    def get_urls(self) -> list[str]:
+        return list(row[self.URL_ROW] for row in self.rows_dict)
