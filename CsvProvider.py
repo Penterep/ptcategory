@@ -10,6 +10,7 @@ from progbar.PgBar import PgBar
 class CsvProvider:
     DELIMITER = ","
     ENCODING = "utf-8"
+    URL_ROW = "URL"
     
     def __init__(self, csv_file_path: str) -> None:
         self.csv_file_path = csv_file_path
@@ -32,6 +33,7 @@ class CsvProvider:
         for row in self.rows_dict:
             self.p.update(1)
             form_extractor = FormExtractor(url=row["URL"])
+            form_extractor = FormExtractor(url=row[self.URL_ROW])
             metadata = form_extractor.get_metadata()
             row["HTML form"] = metadata.html_form
             row["Login form"] = metadata.login_form
@@ -44,7 +46,7 @@ class CsvProvider:
         self.p.set_desc("Extracting JS")
         for row in self.rows_dict:
             self.p.update(1)
-            js_extractor = JSExtractor(url=row["URL"])
+            js_extractor = JSExtractor(url=row[self.URL_ROW])
             metadata = js_extractor.get_metadata()
             row["Local JavaScript"] = metadata.local_js
             row["External JavaScript"] = metadata.external_js
@@ -54,7 +56,7 @@ class CsvProvider:
         self.p.set_desc("Extracting CSS")
         for row in self.rows_dict:
             self.p.update(1)
-            css_extractor = CssExtractor(url=row["URL"])
+            css_extractor = CssExtractor(url=row[self.URL_ROW])
             metadata = css_extractor.get_metadata()
             row["Local CSS"] = metadata.local_css
             row["External CSS"] = metadata.external_css
@@ -64,7 +66,7 @@ class CsvProvider:
         self.p.set_desc("Extracting query")
         for row in self.rows_dict:
             self.p.update(1)
-            query_extractor = QueryExtractor(url=row["URL"])
+            query_extractor = QueryExtractor(url=row[self.URL_ROW])
             metadata = query_extractor.get_metadata()
             row["Query params"] = metadata.query_full
             row["Query param 1"] = metadata.query_1
@@ -74,3 +76,6 @@ class CsvProvider:
             row["Query param 5"] = metadata.query_5
         self.p.set_desc("Extraction done")
         self.p.close()
+        
+    def get_urls(self) -> list[str]:
+        return list(row[self.URL_ROW] for row in self.rows_dict)

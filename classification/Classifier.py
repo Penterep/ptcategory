@@ -16,10 +16,11 @@ class Classifier:
     def __init__(self, dataset: Dataset) -> None:
         self.dataset = dataset
 
-    def mean_shift(self) -> None:
+    def mean_shift(self) -> pd.DataFrame:
         model = MeanShift()
         df = self._get_clustered_dataframe(model)
         self._display_parallel_coordinates(df, "Mean shift")
+        return df
 
     def optics(self) -> None:
         model = OPTICS(eps=0.3, min_samples=5)
