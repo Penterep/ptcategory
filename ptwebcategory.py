@@ -10,9 +10,13 @@ from CsvProvider import CsvProvider
 from RequestCache import RequestCache
 from classification.Classifier import Classifier
 from classification.Dataset import Dataset
+from exporting.JsonExporter import JsonExporter
 
 
 class ptwebcategory:
+    SHOW_EXPORT_PARAMETERS_ARG = "parameters"
+    SHOW_EXPORT_AVERAGES_ARG = "averages"
+    
     def __init__(self, args):
         self.ptjsonlib = ptjsonlib.ptjsonlib(args.json)
         self.json_no = self.ptjsonlib.add_json("ptwebcategory")
@@ -24,15 +28,15 @@ class ptwebcategory:
             print(self.args.file)
             csv_provider = CsvProvider(self.args.file)
             if not self.args.evaluation_only:
-                RequestCache.request_parallel("GET", list(row["URL"] for row in csv_provider.rows_dict))
+                RequestCache.request_parallel("GET", csv_provider.get_urls())
                 csv_provider.extract_forms()
                 csv_provider.extract_javascript()
                 csv_provider.extract_css()
                 csv_provider.extract_query()
                 csv_provider.save_file()
-            dataset = Dataset(csv_provider.rows_dict, start_from_col=1)
+            dataset = Dataset(csv_provider.rows_dict, start_from_col=2)
             classifier = Classifier(dataset)
-            classifier.mean_shift()
+            classified_df = classifier.mean_shift()
             classifier.optics()
             classifier.spectral_clustering()
             classifier.gaussian_mixture()
@@ -42,6 +46,13 @@ class ptwebcategory:
             classifier.agglomerative_clustering()
             classifier.kmeans()
             classifier.kmeans_mini_batch()
+            
+            if self.args.json is not None:
+                exporter = JsonExporter(csv_provider.get_urls())
+                exporter.export_with_parameters = self.SHOW_EXPORT_PARAMETERS_ARG in self.args.json
+                exporter.export_with_averages = self.SHOW_EXPORT_AVERAGES_ARG in self.args.json
+                exporter.export_to_file(classified_df, "export.json")
+            
             input("Press enter to exit...")
         sys.exit(0)
 
@@ -68,7 +79,7 @@ def parse_args():
     parser = argparse.ArgumentParser(
         add_help=False, usage=f"{SCRIPTNAME} <options>")
     parser.add_argument("-f", "--file", type=str)
-    parser.add_argument("-j", "--json", action="store_true")
+    parser.add_argument("-j", "--json", nargs="*", choices=[ptwebcategory.SHOW_EXPORT_PARAMETERS_ARG, ptwebcategory.SHOW_EXPORT_AVERAGES_ARG])
     parser.add_argument("-v", "--version", action="version",
                         version=f"%(prog)s {__version__}")
     parser.add_argument("-e", "--evaluation-only", action="store_true")  # TODO: delete after clustering tests
