@@ -4,19 +4,6 @@
 # PTWEBCATEGORY
 > Target categorization tool for web application penetration testing
 
-## Installation
-
-```
-pip install ptwebcategory
-```
-
-### Add to PATH
-If you cannot invoke the script in your terminal, its probably because its not in your PATH. Fix it by running commands below.
-```bash
-echo "export PATH=\"`python3 -m site --user-base`/bin:\$PATH\"" >> ~/.bashrc
-source ~/.bashrc
-```
-
 ## Usage examples
 
 ```
@@ -45,7 +32,7 @@ Python 3.6+ is required.
 
 ## License
 
-Copyright (c) 2022 HACKER Consulting s.r.o.
+Copyright (c) 2022 Penterep Security s.r.o.
 
 ptwebcategory is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
