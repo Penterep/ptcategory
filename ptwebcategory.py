@@ -5,6 +5,7 @@ __version__ = "0.0.1"
 from ptlibs import ptjsonlib, ptmisclib
 import argparse
 import sys
+import logging
 
 from CsvProvider import CsvProvider
 from RequestCache import RequestCache
@@ -33,28 +34,45 @@ class ptwebcategory:
                 spinner.start()
                 RequestCache.request_parallel("GET", csv_provider.get_urls())
                 spinner.stop()
+                logging.info("Requesting URLs... Done")
+                logging.info("Extracting html forms")
                 csv_provider.extract_forms()
+                logging.info("Extracting javascript")
                 csv_provider.extract_javascript()
+                logging.info("Extracting css")
                 csv_provider.extract_css()
+                logging.info("Extracting query parameters")
                 csv_provider.extract_query()
+                logging.info("Saving dataset csv file")
                 csv_provider.save_file()
             dataset = Dataset(csv_provider.rows_dict, start_from_col=2)
             classifier = Clustering(dataset)
+            logging.info("Mean shift clustering")
             classified_df = classifier.mean_shift()
+            logging.info("Optics clustering")
             classifier.optics()
+            logging.info("Spectral clustering")
             classifier.spectral_clustering()
+            logging.info("Gaussian mixture clustering")
             classifier.gaussian_mixture()
+            logging.info("DBSCAN clustering")
             classifier.dbscan()
+            logging.info("Birch clustering")
             classifier.birch()
+            logging.info("Affinity propagation clustering")
             classifier.affinity_propagation()
+            logging.info("Agglomerative clustering")
             classifier.agglomerative_clustering()
+            logging.info("K-means clustering")
             classifier.kmeans()
+            logging.info("K-means mini batch clustering")
             classifier.kmeans_mini_batch()
             
             if self.args.json is not None:
                 exporter = JsonExporter(csv_provider.get_urls())
                 exporter.export_with_parameters = self.SHOW_EXPORT_PARAMETERS_ARG in self.args.json
                 exporter.export_with_averages = self.SHOW_EXPORT_AVERAGES_ARG in self.args.json
+                logging.info("Exporting to json file")
                 exporter.export_to_file(classified_df, "export.json")
             
             input("Press enter to exit...")
@@ -101,6 +119,7 @@ def parse_args():
 def main():
     global SCRIPTNAME
     SCRIPTNAME = "ptwebcategory"
+    logging.basicConfig(level=logging.INFO, format='%(message)s')
     args = parse_args()
     script = ptwebcategory(args)
     script.run()
