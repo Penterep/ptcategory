@@ -1,6 +1,6 @@
 from tqdm import tqdm
 
-class PgBar:
+class ProgressBar:
     
     def __init__(self, max_value) -> None:
         self.max_value = max_value

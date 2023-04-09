@@ -8,7 +8,7 @@ import sys
 
 from CsvProvider import CsvProvider
 from RequestCache import RequestCache
-from classification.Classifier import Classifier
+from classification.Classifier import Clustering
 from classification.Dataset import Dataset
 from exporting.JsonExporter import JsonExporter
 from halo import Halo
@@ -39,7 +39,7 @@ class ptwebcategory:
                 csv_provider.extract_query()
                 csv_provider.save_file()
             dataset = Dataset(csv_provider.rows_dict, start_from_col=2)
-            classifier = Classifier(dataset)
+            classifier = Clustering(dataset)
             classified_df = classifier.mean_shift()
             classifier.optics()
             classifier.spectral_clustering()

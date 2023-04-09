@@ -1,6 +1,6 @@
 import pandas as pd
 from matplotlib import pyplot
-from numpy import unique, where
+from numpy import arange, sort, unique, where
 from sklearn.cluster import OPTICS, MeanShift, SpectralClustering, KMeans, MiniBatchKMeans, DBSCAN, Birch, AffinityPropagation, AgglomerativeClustering
 from sklearn.mixture import GaussianMixture
 from sklearn.neighbors import NearestNeighbors
@@ -9,7 +9,7 @@ from kneed import KneeLocator
 from classification.Dataset import Dataset
 
 
-class Classifier:
+class Clustering:
     COLORS = ("#00ced1", "#ffa500", "#00ff00", "#0000ff", "#ff1493")
     CLUSTER_COLUMN_NAME = "cluster"
 
