@@ -9,7 +9,7 @@ import logging
 
 from CsvProvider import CsvProvider
 from RequestCache import RequestCache
-from classification.Classifier import Clustering
+from classification.Clustering import Clustering
 from classification.Dataset import Dataset
 from exporting.JsonExporter import JsonExporter
 from halo import Halo
