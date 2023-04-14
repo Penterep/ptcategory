@@ -5,7 +5,7 @@ from formextraction.FormExtractor import FormExtractor
 from jsextraction.JSExtractor import JSExtractor
 from cssextraction.CssExtractor import CssExtractor
 from queryextraction.QueryExtractor import QueryExtractor
-from progbar.PgBar import PgBar
+from ProgressBar import ProgressBar
 
 class CsvProvider:
     DELIMITER = ","
@@ -16,7 +16,7 @@ class CsvProvider:
         self.csv_file_path = csv_file_path
         with open(csv_file_path, encoding=self.ENCODING) as csv_file:
             self.rows_dict = list(csv.DictReader(csv_file, delimiter=self.DELIMITER))
-        self.p = PgBar(max_value=len(self.rows_dict)*4)
+        self.progress_bar = ProgressBar(max_value=len(self.rows_dict)*4)
         
             
     def save_file(self) -> None:
@@ -29,9 +29,9 @@ class CsvProvider:
                 raise UnknownCsvHeadersError("Cannot figure out headers of the csv file, because csv file does not have any rows.")
     
     def extract_forms(self) -> None:
-        self.p.set_desc("Extracting forms")
+        self.progress_bar.set_desc("Extracting forms")
         for row in self.rows_dict:
-            self.p.update(1)
+            self.progress_bar.update(1)
             form_extractor = FormExtractor(url=row["URL"])
             form_extractor = FormExtractor(url=row[self.URL_ROW])
             metadata = form_extractor.get_metadata()
@@ -43,9 +43,9 @@ class CsvProvider:
             row["Registration form"] = metadata.registration_form
                               
     def extract_javascript(self) -> None:
-        self.p.set_desc("Extracting JS")
+        self.progress_bar.set_desc("Extracting JS")
         for row in self.rows_dict:
-            self.p.update(1)
+            self.progress_bar.update(1)
             js_extractor = JSExtractor(url=row[self.URL_ROW])
             metadata = js_extractor.get_metadata()
             row["Local JavaScript"] = metadata.local_js
@@ -53,9 +53,9 @@ class CsvProvider:
             row["Inline JavaScript"] = metadata.inline_js
             
     def extract_css(self) -> None:
-        self.p.set_desc("Extracting CSS")
+        self.progress_bar.set_desc("Extracting CSS")
         for row in self.rows_dict:
-            self.p.update(1)
+            self.progress_bar.update(1)
             css_extractor = CssExtractor(url=row[self.URL_ROW])
             metadata = css_extractor.get_metadata()
             row["Local CSS"] = metadata.local_css
@@ -63,9 +63,9 @@ class CsvProvider:
             row["Block CSS"] = metadata.block_css
 
     def extract_query(self) -> None:
-        self.p.set_desc("Extracting query")
+        self.progress_bar.set_desc("Extracting query")
         for row in self.rows_dict:
-            self.p.update(1)
+            self.progress_bar.update(1)
             query_extractor = QueryExtractor(url=row[self.URL_ROW])
             metadata = query_extractor.get_metadata()
             row["Query params"] = metadata.query_full
@@ -74,8 +74,8 @@ class CsvProvider:
             row["Query param 3"] = metadata.query_3
             row["Query param 4"] = metadata.query_4
             row["Query param 5"] = metadata.query_5
-        self.p.set_desc("Extraction done")
-        self.p.close()
+        self.progress_bar.set_desc("Extraction done")
+        self.progress_bar.close()
         
     def get_urls(self) -> list[str]:
         return list(row[self.URL_ROW] for row in self.rows_dict)
