@@ -84,7 +84,6 @@ class Clustering:
         yhat = model.fit_predict(dataset_copy)
         clusters = unique(yhat)
         
-
         i = 1
         for cluster in clusters:
             row_indexes = where(yhat == cluster)[0]
@@ -92,11 +91,30 @@ class Clustering:
                 dataset_copy[r_i].append("Cluster " + str(i))
             i += 1
 
+        return self._get_dataframe(dataset_copy)
+    
+    def manual_clustering(self) -> pd.DataFrame:
+        dataset_copy = self.dataset.get_copy()
+        group_indexes: dict[tuple, str] = {}
+        last_group_index = 1
+        for row_index, dataset_row in enumerate(dataset_copy):
+            group_key = tuple(dataset_row)
+            if group_key in group_indexes:
+                dataset_copy[row_index].append(group_indexes[group_key])
+            else:
+                group_index = "Cluster " + str(last_group_index)
+                group_indexes[group_key] = group_index
+                dataset_copy[row_index].append(group_index)
+                last_group_index += 1
+        df = self._get_dataframe(dataset_copy)
+        self._display_parallel_coordinates(df, "Manual clustering")
+        return df
+    
+    def _get_dataframe(self, dataset: list[list[int]]) -> pd.DataFrame:
         categories = self.dataset.get_categories()
         categories.append(self.CLUSTER_COLUMN_NAME)
-
-        return pd.DataFrame(dataset_copy, columns=categories)
-
+        return pd.DataFrame(dataset, columns=categories)
+    
     def _display_parallel_coordinates(self, data_frame: pd.DataFrame, figure_name: str) -> None:
         f = pyplot.figure(figure_name)
         pd.plotting.parallel_coordinates(data_frame, self.CLUSTER_COLUMN_NAME, color=self.COLORS)

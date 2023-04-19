@@ -2,17 +2,19 @@
 
 __version__ = "0.0.1"
 
-from ptlibs import ptjsonlib, ptmisclib
 import argparse
 import sys
 import logging
+
+from halo import Halo
+
+from ptlibs import ptjsonlib, ptmisclib
 
 from CsvProvider import CsvProvider
 from RequestCache import RequestCache
 from classification.Clustering import Clustering
 from classification.Dataset import Dataset
 from exporting.JsonExporter import JsonExporter
-from halo import Halo
 
 
 class ptwebcategory:
@@ -28,9 +30,9 @@ class ptwebcategory:
     def run(self):
         if self.args.file:
             print(self.args.file)
-            spinner = Halo(text="Requesting URLs...", spinner="dots", color = "white")
             csv_provider = CsvProvider(self.args.file)
             if not self.args.evaluation_only:
+                spinner = Halo(text="Requesting URLs...", spinner="dots", color = "white")
                 spinner.start()
                 RequestCache.request_parallel("GET", csv_provider.get_urls())
                 spinner.stop()
@@ -67,6 +69,9 @@ class ptwebcategory:
             classifier.kmeans()
             logging.info("K-means mini batch clustering")
             classifier.kmeans_mini_batch()
+            logging.info("Manual clustering")
+            classifier.manual_clustering()
+            logging.info(f"Manual clustering... Done")
             
             if self.args.json is not None:
                 exporter = JsonExporter(csv_provider.get_urls())
@@ -92,7 +97,7 @@ def get_help():
             ["-j", "--json", "", "Output in JSON format"],
             ["-v", "--version", "", "Show script version and exit"],
             ["-h", "--help", "", "Show this help message and exit"],
-            ["-e", "--evaluation-only", "", "Run only evaluation on already created dataset"]  # TODO: delete after clustering tests
+            ["-e", "--evaluation-only", "", "Run only evaluation on already created dataset"]
         ]
         }]
 
@@ -104,7 +109,7 @@ def parse_args():
     parser.add_argument("-j", "--json", nargs="*", choices=[ptwebcategory.SHOW_EXPORT_PARAMETERS_ARG, ptwebcategory.SHOW_EXPORT_AVERAGES_ARG])
     parser.add_argument("-v", "--version", action="version",
                         version=f"%(prog)s {__version__}")
-    parser.add_argument("-e", "--evaluation-only", action="store_true")  # TODO: delete after clustering tests
+    parser.add_argument("-e", "--evaluation-only", action="store_true")
 
     if len(sys.argv) == 1 or "-h" in sys.argv or "--help" in sys.argv:
         ptmisclib.help_print(get_help(), SCRIPTNAME, __version__)
