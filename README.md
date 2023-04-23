@@ -39,6 +39,7 @@ ptwebcategory -f ./dataset-test.csv -e                # Load dataset only for cl
 - scikit_learn
 - tldextract
 - tqdm
+- lxml
 
 We use [ExifTool](https://exiftool.org/) to extract metadata.
 Python 3.6+ is required.
