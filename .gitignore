@@ -134,3 +134,6 @@ dmypy.json
 
 # Datasets
 dataset-*
+
+# Results
+export.json

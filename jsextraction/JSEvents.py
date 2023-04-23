@@ -6,6 +6,7 @@ class JSEvents:
         "onloadstart", "onpause", "onplay", "onplaying", "onprogress", "onratechange", "onreadystatechange", "onseeked", "onseekingg", "onstalled", "onsuspendaded", "ontimeupdate", "onvolumechange", "onwaiting"
     ]    
 
+    # Returns a string with all the events in the EVENTS list
     def get_select_format(self) -> str:
         events_str = ""
         events_str += ", ".join(f"[{event}]" for event in self.EVENTS)

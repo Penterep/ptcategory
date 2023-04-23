@@ -6,6 +6,7 @@ class HrefAttribute:
     def __init__(self, value:str) -> None:
         self.value = value
         
+    # Determines if the href is a file or not
     def is_file_href(self) -> bool:
         if self.value.startswith(self.SPECIAL_PREFIXES):
             return False
@@ -13,6 +14,7 @@ class HrefAttribute:
         suffix = self.get_suffix()
         return not suffix == "" and not suffix in self.NOT_FILE_SUFFIXES and not suffix in self.WEB_SUFFIXES
     
+    # Determines if the href is a web link or not
     def get_suffix(self) -> str:
         last_slash_part = self.get_last_slash_part()
         split_by_dot = last_slash_part.split(".")
@@ -21,14 +23,17 @@ class HrefAttribute:
         else:
             return ""
     
+    # Returns the last part of the href after the last slash
     def get_last_slash_part(self) -> str:
         parts = self.get_value_without_params().split("/")
         return parts[-1]
     
+    # Returns the href without any parameters
     def get_value_without_params(self) -> str:
         value_without_params = self.strip_from_character(self.value, "?")
         return self.strip_from_character(value_without_params, "#")
         
+    # Strips the string from the first occurence of the character
     def strip_from_character(self, s: str, character:str) -> str:
         stripped = s
         character_index = stripped.find(character)

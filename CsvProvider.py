@@ -18,7 +18,7 @@ class CsvProvider:
             self.rows_dict = list(csv.DictReader(csv_file, delimiter=self.DELIMITER))
         self.progress_bar = ProgressBar(max_value=len(self.rows_dict)*4)
         
-            
+    # Saves the CSV file
     def save_file(self) -> None:
         with open(self.csv_file_path, "w", encoding=self.ENCODING, newline="") as csv_file:
             if len(self.rows_dict) > 0:
@@ -28,6 +28,7 @@ class CsvProvider:
             else:
                 raise UnknownCsvHeadersError("Cannot figure out headers of the csv file, because csv file does not have any rows.")
     
+    # Extracts all the form metadata from the CSV file    
     def extract_forms(self) -> None:
         self.progress_bar.set_desc("Extracting forms")
         for row in self.rows_dict:
@@ -41,7 +42,8 @@ class CsvProvider:
             row["Download button"] = metadata.download_button
             row["User input"] = metadata.user_input
             row["Registration form"] = metadata.registration_form
-                              
+             
+    # Extracts all the JavaScript metadata from the CSV file                 
     def extract_javascript(self) -> None:
         self.progress_bar.set_desc("Extracting JS")
         for row in self.rows_dict:
@@ -52,6 +54,7 @@ class CsvProvider:
             row["External JavaScript"] = metadata.external_js
             row["Inline JavaScript"] = metadata.inline_js
             
+    # Extracts all the CSS metadata from the CSV file
     def extract_css(self) -> None:
         self.progress_bar.set_desc("Extracting CSS")
         for row in self.rows_dict:
@@ -62,6 +65,7 @@ class CsvProvider:
             row["External CSS"] = metadata.external_css
             row["Block CSS"] = metadata.block_css
 
+    # Extracts all the query metadata from the CSV file
     def extract_query(self) -> None:
         self.progress_bar.set_desc("Extracting query")
         for row in self.rows_dict:
@@ -77,5 +81,6 @@ class CsvProvider:
         self.progress_bar.set_desc("Extraction done")
         self.progress_bar.close()
         
+    # Returns the URLs from the CSV file
     def get_urls(self) -> list[str]:
         return list(row[self.URL_ROW] for row in self.rows_dict)

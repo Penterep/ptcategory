@@ -8,15 +8,18 @@ class QueryExtractor:
     def __init__(self, url: str) -> None:
         self.url = url
       
+    # Returns query metadata
     def get_metadata(self) -> QueryMetadata:
         query_full = self.get_query()
         query_1, query_2, query_3, query_4, query_5 = self.get_q_parameters()
         return QueryMetadata(query_full, query_1, query_2, query_3, query_4, query_5)
     
+    # Returns the query
     def get_query(self) -> str:
         parsed_query = urlparse(self.url).query
         return parsed_query if parsed_query != "" else "0"
     
+    # Returns the first 5 query parameters
     def get_q_parameters(self) -> int:
         max_params = 5
         i = 0

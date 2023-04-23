@@ -4,6 +4,11 @@
 # PTWEBCATEGORY
 > Target categorization tool for web application penetration testing
 
+## Installation
+```
+pip install -r requirements.txt
+```
+
 ## Usage examples
 
 ```
@@ -18,10 +23,22 @@ ptwebcategory -f ./dataset-test.csv -e                # Load dataset only for cl
    -j   --json                                Output in JSON format
    -v   --version                             Show script version and exit
    -h   --help                                Show this help message and exit
+   -m   --clustering-method                   Clustering method to use. Default: kmeans. Available: mean_shift, optics, spectral_clustering, gaussian_mixture, dbscan, birch, affinity_propagation, agglomerative_clustering, kmeans, kmeans_mini_batch, manual_clustering
 ```
 
 ## Dependencies
+- beautifulsoup4
+- halo
+- kneed
+- matplotlib
+- numpy
+- pandas
 - ptlibs
+- ptthreads
+- requests
+- scikit_learn
+- tldextract
+- tqdm
 
 We use [ExifTool](https://exiftool.org/) to extract metadata.
 Python 3.6+ is required.
