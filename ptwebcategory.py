@@ -5,12 +5,10 @@ __version__ = "0.0.1"
 import argparse
 import sys
 import logging
-from typing import Callable
 
 from halo import Halo
-
+from typing import Callable
 from ptlibs import ptjsonlib, ptmisclib
-
 from CsvProvider import CsvProvider
 from RequestCache import RequestCache
 from classification.Clustering import Clustering
@@ -43,38 +41,51 @@ class ptwebcategory:
 
     def run(self):
         if self.args.file:
+            # Print file path
             print(self.args.file)
+            # Initialize csv provider instance
             csv_provider = CsvProvider(self.args.file)
+            # Check if evaluation only is enabled
             if not self.args.evaluation_only:
+                # Request all loaded URLs and extract HTML, JavaScript, CSS and query parameters
                 spinner = Halo(text="Requesting URLs...", spinner="dots", color = "white")
                 spinner.start()
                 RequestCache.request_parallel("GET", csv_provider.get_urls())
                 spinner.stop()
                 logging.info("Requesting URLs... Done")
-                logging.info("Extracting html forms")
+                logging.info("Extracting HTML forms")
                 csv_provider.extract_forms()
-                logging.info("Extracting javascript")
+                logging.info("Extracting JavaScript")
                 csv_provider.extract_javascript()
-                logging.info("Extracting css")
+                logging.info("Extracting CSS")
                 csv_provider.extract_css()
                 logging.info("Extracting query parameters")
                 csv_provider.extract_query()
-                logging.info("Saving dataset csv file")
+                logging.info("Saving dataset CSV file")
                 csv_provider.save_file()
+            # Initialize dataset instance
             dataset = Dataset(csv_provider.rows_dict, start_from_col=2)
+            # Initialize classifier instance
             classifier = Clustering(dataset)
+            # Select clustering method name from args
             clustering_method_name = self.args.clustering_method
+            # Get clustering method from methods dict
             clustrering_method = self.methods[clustering_method_name](classifier)
             logging.info(f"{clustering_method_name} clustering")
             classified_df = clustrering_method()
             logging.info(f"{clustering_method_name} clustering... Done")
+            # Check if json output is enabled
             if self.args.json is not None:
+                # Initialize json exporter instance
                 exporter = JsonExporter(csv_provider.get_urls())
+                # Set json exporter parameters
                 exporter.export_with_parameters = self.SHOW_EXPORT_PARAMETERS_ARG in self.args.json
+                # Set json exporter averages
                 exporter.export_with_averages = self.SHOW_EXPORT_AVERAGES_ARG in self.args.json
                 logging.info("Exporting to json file")
+                # Export to json file
                 exporter.export_to_file(classified_df, "export.json")
-            
+            # Wait for user confirmation
             input("Press enter to exit...")
         sys.exit(0)
         
@@ -99,22 +110,25 @@ def get_help():
 
 
 def parse_args():
+    # Initialize argument parser
     parser = argparse.ArgumentParser(
         add_help=False, usage=f"{SCRIPTNAME} <options>")
+    # Add arguments
     parser.add_argument("-f", "--file", type=str)
     parser.add_argument("-j", "--json", nargs="*", choices=[ptwebcategory.SHOW_EXPORT_PARAMETERS_ARG, ptwebcategory.SHOW_EXPORT_AVERAGES_ARG])
     parser.add_argument("-v", "--version", action="version",
                         version=f"%(prog)s {__version__}")
     parser.add_argument("-e", "--evaluation-only", action="store_true")
     parser.add_argument("-m", "--clustering-method", choices=list(ptwebcategory.methods.keys()), default="kmeans")
-
+    # Check if no arguments were passed or help was requested
     if len(sys.argv) == 1 or "-h" in sys.argv or "--help" in sys.argv:
         ptmisclib.help_print(get_help(), SCRIPTNAME, __version__)
         sys.exit(0)
-
+    # Parse arguments
     args = parser.parse_args()
+    # Print banner
     ptmisclib.print_banner(SCRIPTNAME, __version__, args.json)
-
+    # Return parsed arguments
     return args
 
 

@@ -16,11 +16,13 @@ class CssExtractor:
         self.response: requests.Request = RequestCache.request(self.METHOD, url)
         self.soup = BeautifulSoup(self.response.text, self.PARSER)
     
+    # Returns CSS metadata
     def get_metadata(self) -> CssMetadata:
         external_css, local_css = self._parse_link()
         block_css = self._get_block_css()
         return CssMetadata(local_css, external_css, block_css)
     
+    # Returns the number of external CSS and local CSS
     def _parse_link(self) -> int:
         links = self._get_link()
         external_css = 0
@@ -34,6 +36,7 @@ class CssExtractor:
             local_css += 1
         return external_css, local_css
 
+    # Determines if the CSS is external
     def _is_external_css(self, src: str) -> bool:
         if src.startswith("//"):
             src = src.lstrip("//")
@@ -42,12 +45,15 @@ class CssExtractor:
             return True
         return False
     
+    # Returns the number of block CSS
     def _get_block_css(self) -> int:
         return len(self.soup.find_all("style"))
     
+    # Returns the number of link tags
     def _get_link(self) -> ResultSet:
         return self.soup.find_all("link")
     
+    # Extracts the domain name from the URL
     def _extract_domain(self, url: str) -> str:
         ext = tldextract.extract(url)
         return f"{ext.domain}.{ext.suffix}"

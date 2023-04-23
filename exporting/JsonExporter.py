@@ -8,7 +8,7 @@ class JsonExporter:
         self.export_with_parameters = False
         self.export_with_averages = False
         
-        
+    # Exports the data to a JSON file
     def export_to_file(self, df :pd.DataFrame, file_name: str) -> None:
         res = {}
         df.insert(0, "URL", self.urls)
@@ -27,7 +27,7 @@ class JsonExporter:
                 group_res["Items"] = group.to_dict(orient="records")
             else:
                 group_res["Items"] = group["URL"].to_list()
-            
+        
         with open(file_name, "w") as f:
             json.dump(res, f, indent=4)
             
