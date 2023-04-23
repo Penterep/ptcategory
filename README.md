@@ -18,9 +18,18 @@ ptwebcategory -f ./dataset-test.csv -e                # Load dataset only for cl
    -j   --json                                Output in JSON format
    -v   --version                             Show script version and exit
    -h   --help                                Show this help message and exit
+   -m   --clustering-method                   Clustering method to use. Default: kmeans. Available: mean_shift, optics, spectral_clustering, gaussian_mixture, dbscan, birch, affinity_propagation, agglomerative_clustering, kmeans, kmeans_mini_batch, manual_clustering
 ```
 
 ## Dependencies
+- bs4
+- halo
+- kneed
+- lxml
+- matplotlib
+- pandas
+- scikit-learn
+- tqdm
 - ptlibs
 
 We use [ExifTool](https://exiftool.org/) to extract metadata.
