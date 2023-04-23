@@ -4,6 +4,11 @@
 # PTWEBCATEGORY
 > Target categorization tool for web application penetration testing
 
+## Installation
+```
+pip install -r requirements.txt
+```
+
 ## Usage examples
 
 ```
@@ -22,15 +27,18 @@ ptwebcategory -f ./dataset-test.csv -e                # Load dataset only for cl
 ```
 
 ## Dependencies
-- bs4
+- beautifulsoup4
 - halo
 - kneed
-- lxml
 - matplotlib
+- numpy
 - pandas
-- scikit-learn
-- tqdm
 - ptlibs
+- ptthreads
+- requests
+- scikit_learn
+- tldextract
+- tqdm
 
 We use [ExifTool](https://exiftool.org/) to extract metadata.
 Python 3.6+ is required.
