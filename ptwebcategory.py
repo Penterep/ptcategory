@@ -82,8 +82,8 @@ class ptwebcategory:
                 exporter.export_with_parameters = self.SHOW_EXPORT_PARAMETERS_ARG in self.args.json
                 # Set json exporter averages
                 exporter.export_with_averages = self.SHOW_EXPORT_AVERAGES_ARG in self.args.json
-                logging.info("Exporting to json file")
-                # Export to json file
+                logging.info("Exporting to JSON file")
+                # Export to JSON file
                 exporter.export_to_file(classified_df, "export.json")
             # Wait for user confirmation
             input("Press enter to exit...")
