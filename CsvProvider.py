@@ -33,7 +33,6 @@ class CsvProvider:
         self.progress_bar.set_desc("Extracting forms")
         for row in self.rows_dict:
             self.progress_bar.update(1)
-            form_extractor = FormExtractor(url=row["URL"])
             form_extractor = FormExtractor(url=row[self.URL_ROW])
             metadata = form_extractor.get_metadata()
             row["HTML form"] = metadata.html_form
