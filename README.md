@@ -1,7 +1,7 @@
 ![penterepTools](https://www.penterep.com/external/penterepToolsLogo.png)
 
 
-# PTWEBCATEGORY
+# PTCATEGORY
 > Target categorization tool for web application penetration testing
 
 ## Installation
@@ -52,7 +52,7 @@ Python 3.6+ is required.
 
 Copyright (c) 2022 Penterep Security s.r.o.
 
-ptwebcategory is free software: you can redistribute it and/or modify
+ptcategory is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
