@@ -12,8 +12,8 @@ pip install -r requirements.txt
 ## Usage examples
 
 ```
-ptwebcategory -f ./dataset-test.csv                   # Load dataset (CSV)
-ptwebcategory -f ./dataset-test.csv -e                # Load dataset only for clustering
+ptcategory -f ./dataset-test.csv                   # Load dataset (CSV)
+ptcategory -f ./dataset-test.csv -e                # Load dataset only for clustering
 ```
 
 ## Options
@@ -57,13 +57,13 @@ it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-ptwebcategory is distributed in the hope that it will be useful,
+ptcategory is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with ptwebcategory.  If not, see <https://www.gnu.org/licenses/>.
+along with ptcategory.  If not, see <https://www.gnu.org/licenses/>.
 
 ## Warning
 

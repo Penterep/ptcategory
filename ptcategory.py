@@ -16,7 +16,7 @@ from classification.Dataset import Dataset
 from exporting.JsonExporter import JsonExporter
 
 
-class ptwebcategory:
+class ptcategory:
     SHOW_EXPORT_PARAMETERS_ARG = "parameters"
     SHOW_EXPORT_AVERAGES_ARG = "averages"
     methods: dict[str, Callable[[Clustering], Callable]] = {
@@ -35,7 +35,7 @@ class ptwebcategory:
     
     def __init__(self, args):
         self.ptjsonlib = ptjsonlib.ptjsonlib(args.json)
-        self.json_no = self.ptjsonlib.add_json("ptwebcategory")
+        self.json_no = self.ptjsonlib.add_json("ptcategory")
         self.use_json = args.json
         self.args = args
 
@@ -64,7 +64,7 @@ class ptwebcategory:
                 logging.info("Saving dataset CSV file")
                 csv_provider.save_file()
             # Initialize dataset instance
-            dataset = Dataset(csv_provider.rows_dict, start_from_col=2)
+            dataset = Dataset(csv_provider.rows_dict, start_from_col=1)
             # Initialize classifier instance
             classifier = Clustering(dataset)
             # Select clustering method name from args
@@ -94,9 +94,9 @@ def get_help():
     return [
         {"description": [
             "Target categorization tool for web application penetration testing"]},
-        {"usage": ["ptwebcategory <options>"]},
+        {"usage": ["ptcategory <options>"]},
         {"usage_example": [
-            "ptwebcategory -f",
+            "ptcategory -f",
         ]},
         {"options": [
             ["-f", "--file", "<file path>", "Load urls from file"],
@@ -115,11 +115,11 @@ def parse_args():
         add_help=False, usage=f"{SCRIPTNAME} <options>")
     # Add arguments
     parser.add_argument("-f", "--file", type=str)
-    parser.add_argument("-j", "--json", nargs="*", choices=[ptwebcategory.SHOW_EXPORT_PARAMETERS_ARG, ptwebcategory.SHOW_EXPORT_AVERAGES_ARG])
+    parser.add_argument("-j", "--json", nargs="*", choices=[ptcategory.SHOW_EXPORT_PARAMETERS_ARG, ptcategory.SHOW_EXPORT_AVERAGES_ARG])
     parser.add_argument("-v", "--version", action="version",
                         version=f"%(prog)s {__version__}")
     parser.add_argument("-e", "--evaluation-only", action="store_true")
-    parser.add_argument("-m", "--clustering-method", choices=list(ptwebcategory.methods.keys()), default="kmeans")
+    parser.add_argument("-m", "--clustering-method", choices=list(ptcategory.methods.keys()), default="kmeans")
     # Check if no arguments were passed or help was requested
     if len(sys.argv) == 1 or "-h" in sys.argv or "--help" in sys.argv:
         ptmisclib.help_print(get_help(), SCRIPTNAME, __version__)
@@ -134,10 +134,10 @@ def parse_args():
 
 def main():
     global SCRIPTNAME
-    SCRIPTNAME = "ptwebcategory"
+    SCRIPTNAME = "ptcategory"
     logging.basicConfig(level=logging.INFO, format='%(message)s')
     args = parse_args()
-    script = ptwebcategory(args)
+    script = ptcategory(args)
     script.run()
 
 
