@@ -129,7 +129,16 @@ class Clustering:
     
     # Displays the parallel coordinates of the dataframe
     def _display_parallel_coordinates(self, data_frame: pd.DataFrame, figure_name: str) -> None:
+        self._print_cluster_stats(data_frame)
         f = pyplot.figure(figure_name)
         pd.plotting.parallel_coordinates(data_frame, self.CLUSTER_COLUMN_NAME, color=self.COLORS)
         f.show()
         
+    def _print_cluster_stats(self, df):
+        cluster_counts = df['cluster'].value_counts().sort_index()
+        print("Number of items in each cluster:")
+        print(cluster_counts)
+        
+        cluster_means = df.groupby('cluster').mean()
+        print("Average values for each cluster:")
+        print(cluster_means)
